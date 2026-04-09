@@ -1,0 +1,145 @@
+==================
+String with escape sequences
+==================
+
+{"a": "hello \"world\"\n\\path\/to\ttab\u00E9"}
+
+---
+
+(document
+  (object
+    (pair
+      key: (string (string_content))
+      value: (string
+        (string_content
+          (escape_sequence)
+          (escape_sequence)
+          (escape_sequence)
+          (escape_sequence)
+          (escape_sequence)
+          (escape_sequence)
+          (escape_sequence))))))
+
+==================
+Empty string
+==================
+
+{"a": ""}
+
+---
+
+(document
+  (object
+    (pair
+      key: (string (string_content))
+      value: (string))))
+
+==================
+Integer
+==================
+
+42
+
+---
+
+(document
+  (number))
+
+==================
+Negative integer
+==================
+
+-42
+
+---
+
+(document
+  (number))
+
+==================
+Float
+==================
+
+3.14
+
+---
+
+(document
+  (number))
+
+==================
+Negative float
+==================
+
+-3.14
+
+---
+
+(document
+  (number))
+
+==================
+Exponent notation
+==================
+
+1e10
+
+---
+
+(document
+  (number))
+
+==================
+Negative exponent
+==================
+
+1.5E-3
+
+---
+
+(document
+  (number))
+
+==================
+Zero
+==================
+
+0
+
+---
+
+(document
+  (number))
+
+==================
+True
+==================
+
+true
+
+---
+
+(document
+  (true))
+
+==================
+False
+==================
+
+false
+
+---
+
+(document
+  (false))
+
+==================
+Null
+==================
+
+null
+
+---
+
+(document
+  (null))

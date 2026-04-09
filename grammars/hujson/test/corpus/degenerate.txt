@@ -1,0 +1,87 @@
+==================
+Bare root string
+==================
+
+"hello"
+
+---
+
+(document
+  (string (string_content)))
+
+==================
+Bare root number
+==================
+
+42
+
+---
+
+(document
+  (number))
+
+==================
+Bare root true
+==================
+
+true
+
+---
+
+(document
+  (true))
+
+==================
+Bare root false
+==================
+
+false
+
+---
+
+(document
+  (false))
+
+==================
+Bare root null
+==================
+
+null
+
+---
+
+(document
+  (null))
+
+==================
+Unicode in string values
+==================
+
+{"emoji": "🎯", "cjk": "漢字"}
+
+---
+
+(document
+  (object
+    (pair
+      key: (string (string_content))
+      value: (string (string_content)))
+    (pair
+      key: (string (string_content))
+      value: (string (string_content)))))
+
+==================
+Unicode in comments
+==================
+
+// 日本語コメント 🎉
+{"a": 1}
+
+---
+
+(document
+  (comment)
+  (object
+    (pair
+      key: (string (string_content))
+      value: (number))))

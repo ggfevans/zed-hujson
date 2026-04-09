@@ -1,0 +1,157 @@
+==================
+Trailing comma in object
+==================
+
+{"a": 1,}
+
+---
+
+(document
+  (object
+    (pair
+      key: (string (string_content))
+      value: (number))))
+
+==================
+Trailing comma in array
+==================
+
+[1, 2, 3,]
+
+---
+
+(document
+  (array
+    (number)
+    (number)
+    (number)))
+
+==================
+Trailing comma in nested object
+==================
+
+{"a": {"b": 1,},}
+
+---
+
+(document
+  (object
+    (pair
+      key: (string (string_content))
+      value: (object
+        (pair
+          key: (string (string_content))
+          value: (number))))))
+
+==================
+Trailing comma in nested array
+==================
+
+[[1,], [2,],]
+
+---
+
+(document
+  (array
+    (array
+      (number))
+    (array
+      (number))))
+
+==================
+Trailing comma with comment after
+==================
+
+{
+  "a": 1, // note
+}
+
+---
+
+(document
+  (object
+    (pair
+      key: (string (string_content))
+      value: (number))
+    (comment)))
+
+==================
+Single element with trailing comma in object
+==================
+
+{"a": 1,}
+
+---
+
+(document
+  (object
+    (pair
+      key: (string (string_content))
+      value: (number))))
+
+==================
+Single element with trailing comma in array
+==================
+
+[1,]
+
+---
+
+(document
+  (array
+    (number)))
+
+==================
+Multiple trailing commas are ERROR
+==================
+
+{"a": 1,,}
+
+---
+
+(document
+  (object
+    (pair
+      key: (string (string_content))
+      value: (number))
+    (ERROR)
+    ))
+
+==================
+Leading comma is ERROR
+==================
+
+{,"a": 1}
+
+---
+
+(document
+  (object
+    (ERROR)
+    (pair
+      key: (string (string_content))
+      value: (number))))
+
+==================
+Trailing comma in empty object is ERROR
+==================
+
+{,}
+
+---
+
+(document
+  (object
+    (ERROR)))
+
+==================
+Trailing comma in empty array is ERROR
+==================
+
+[,]
+
+---
+
+(document
+  (array
+    (ERROR)))

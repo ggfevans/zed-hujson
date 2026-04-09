@@ -1,0 +1,29 @@
+==================
+Unquoted key
+==================
+
+{key: "value"}
+
+---
+
+(document
+  (object
+    (ERROR
+      (UNEXPECTED 'k')
+      (string
+        (string_content)))))
+
+==================
+Unquoted string value
+==================
+
+{"a": hello}
+
+---
+
+(document
+  (object
+    (ERROR
+      (string
+        (string_content))
+      (UNEXPECTED 'h'))))
