@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  grammar-test:
+    name: Grammar Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install tree-sitter-cli
+        run: npm install -g tree-sitter-cli
+
+      - name: Generate parser
+        working-directory: grammars/hujson
+        run: tree-sitter generate
+
+      - name: Run corpus tests
+        working-directory: grammars/hujson
+        run: tree-sitter test
+
+  extension-build:
+    name: Extension Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip2
+
+      - name: Build WASM extension
+        run: cargo build --release --target wasm32-wasip2
+
+      - name: Verify WASM artefact
+        run: test -f target/wasm32-wasip2/release/zed_hujson.wasm
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip2
+          components: clippy, rustfmt
+
+      - name: Clippy
+        run: cargo clippy --target wasm32-wasip2 -- -D warnings
+
+      - name: Rustfmt
+        run: cargo fmt -- --check
