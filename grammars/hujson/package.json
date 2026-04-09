@@ -1,0 +1,57 @@
+{
+  "name": "tree-sitter-hujson",
+  "version": "0.1.0",
+  "description": "HuJSON (JWCC) grammar for tree-sitter — JSON with comments and trailing commas",
+  "license": "MIT",
+  "author": "Gareth Evans <gareth.gwilym.frederick.evans@gmail.com>",
+  "main": "bindings/node",
+  "types": "bindings/node",
+  "keywords": [
+    "parser",
+    "tree-sitter",
+    "hujson",
+    "jwcc",
+    "json"
+  ],
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ggfevans/zed-hujson.git",
+    "directory": "grammars/hujson"
+  },
+  "scripts": {
+    "build": "tree-sitter generate",
+    "test": "tree-sitter test",
+    "parse": "tree-sitter parse",
+    "install": "node-gyp-build",
+    "prebuildify": "prebuildify --napi --strip"
+  },
+  "dependencies": {
+    "node-addon-api": "^8.2.2",
+    "node-gyp-build": "^4.8.2"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.21.1"
+  },
+  "peerDependenciesMeta": {
+    "tree-sitter": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "prebuildify": "^6.0.0"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.hujson",
+      "injection-regex": "^hujson$"
+    }
+  ]
+}

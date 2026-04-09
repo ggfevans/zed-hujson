@@ -1,0 +1,11 @@
+{
+  "grammars": [
+    {
+      "name": "hujson",
+      "scope": "source.hujson",
+      "file-types": ["hujson"],
+      "injection-regex": "hujson",
+      "highlights": "queries/highlights.scm"
+    }
+  ]
+}
