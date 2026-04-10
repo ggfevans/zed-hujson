@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "hujson",
   "rules": {
     "document": {
@@ -628,5 +629,6 @@
   "inline": [],
   "supertypes": [
     "_value"
-  ]
+  ],
+  "reserved": {}
 }

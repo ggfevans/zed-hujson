@@ -7,5 +7,19 @@
       "injection-regex": "hujson",
       "highlights": "queries/highlights.scm"
     }
-  ]
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "HuJSON (JWCC) grammar for tree-sitter",
+    "authors": [
+      {
+        "name": "Gareth Evans",
+        "email": "hi@gvns.ca"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/ggfevans/zed-hujson"
+    }
+  }
 }
