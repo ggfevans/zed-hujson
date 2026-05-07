@@ -37,12 +37,6 @@ The prompt plan's **decision 1** says the grammar should live at the **repo root
 
 Side effect: `extension.toml` keeps the explicit `path = "grammars/hujson"` rather than the omitted-path form Prompt 10 specifies. Functional behaviour is identical for Zed's loader.
 
-## Build-toolchain note
-
-On this machine, `/opt/homebrew/bin/rustc` (the Homebrew rust) does not have the wasm32-wasip2 std library installed; the rustup-managed toolchain at `~/.rustup/toolchains/stable-aarch64-apple-darwin/` does. To build locally, prepend `$HOME/.cargo/bin:~/.rustup/toolchains/stable-aarch64-apple-darwin/bin` to PATH (or invoke that cargo by absolute path). CI is unaffected — `dtolnay/rust-toolchain@stable` provisions a clean rustup toolchain on the runner.
-
-If you want a permanent fix, either uninstall Homebrew's rust or add a `[env]` block to `.cargo/config.toml`. I did not change this — it's a developer-environment concern, not a repo concern.
-
 ## State of `docs/plan/todo.md`
 
 The TODO file's checkboxes were not ticked off as work progressed in earlier sessions, so most boxes still appear unchecked even though the work is done. I deliberately did **not** tick them mechanically — that would require auditing each line against the repo. Recommend: drop the checkbox-style TODO for v0.1 and rely on git history + this report as the source of truth for what's done. The TODO will be more useful starting fresh for v0.2.
