@@ -382,7 +382,7 @@ Negatives (must produce ERROR):
 
 ## Resolved decisions (from open-question review)
 
-1. **Grammar location** → move `grammar.js` to the **repo root** (not a `grammars/hujson/` subfolder). `extension.toml` will use `path = "."` (or omit `path`). This sidesteps the unverified monorepo-path behaviour in Zed.
+1. **Grammar location** → grammar lives under **`grammars/hujson/`** (revised 2026-05-06). `extension.toml`'s `[grammars.hujson]` uses `path = "grammars/hujson"`. The earlier "move to repo root" plan was abandoned — the grammar was already vendored under `grammars/hujson/` with the JWCC mutation, regenerated parser, and corpus suite, and Zed's loader resolves the explicit `path` cleanly. The Cargo crate's `src/lib.rs` lives at the repo-root `src/`, distinct from the grammar's own `grammars/hujson/src/parser.c`.
 2. **`zed_extension_api` version** → use the **latest stable** at implementation time (check `https://crates.io/crates/zed_extension_api` when working through Prompt 9). Update the spec/plan to match the actual version pinned.
 3. **`Extension` trait** → if the trait requires more than `new()`, add **minimal no-op stubs** for every required method (return the most conservative `Ok(None)` / `Err("not supported")` / equivalent). v0.1 remains strictly highlighting-only.
 4. **Node-name verification** → **belt-and-braces**: audit `src/node-types.json` after each regenerate AND keep `tree-sitter query <file>.scm` as a verification gate (locally and in CI).
@@ -392,14 +392,13 @@ Negatives (must produce ERROR):
 
 ## Decision-driven follow-up tasks
 
-### From decision 1 (grammar at repo root)
-- [ ] Place `grammar.js`, `package.json`, `tree-sitter.json`, `binding.gyp`, `bindings/`, `src/`, `test/`, `queries/` (the grammar's own queries) at the **repo root** — NOT under `grammars/hujson/`
-- [ ] Update `.gitattributes` paths: `src/parser.c` and `src/tree_sitter/*` (no `grammars/hujson/` prefix)
-- [ ] Update `extension.toml` `[grammars.hujson]` to use `path = "."` (or remove the `path` key entirely if Zed accepts that)
-- [ ] Update CI `working-directory:` for grammar steps from `grammars/hujson` to repo root
-- [ ] Update README "Grammar" / "Development" sections so paths reflect the new layout
-- [ ] Update the prompt plan and corpus-test paths in this TODO to drop the `grammars/hujson/` prefix
-- [ ] Resolve the naming clash between the grammar's own `queries/` (consumed by Neovim/Helix) and Zed's `queries/hujson/` — keep the Zed queries under `queries/hujson/` and the grammar's standalone queries under e.g. `tree-sitter-queries/` OR a clearly-named subfolder; document which is which
+### From decision 1 (grammar under `grammars/hujson/`) — done
+- [x] Grammar files placed under `grammars/hujson/` (`grammar.js`, `package.json`, `tree-sitter.json`, `binding.gyp`, `bindings/`, `src/`, `test/`, `queries/`)
+- [x] `.gitattributes` marks `grammars/hujson/src/parser.c` and `grammars/hujson/src/tree_sitter/*` as `linguist-generated=true`
+- [x] `extension.toml` `[grammars.hujson]` uses `path = "grammars/hujson"`
+- [x] CI `working-directory:` is `grammars/hujson` for `tree-sitter generate` and `tree-sitter test`
+- [x] README "Grammar" / "Development" sections reflect the `grammars/hujson/` layout
+- [x] Naming clash resolved: Zed queries at repo-root `queries/hujson/`, grammar's own queries at `grammars/hujson/queries/` (consumed by Neovim/Helix)
 
 ### From decision 2 (latest `zed_extension_api`)
 - [ ] Before writing `Cargo.toml`, run a quick check on `https://crates.io/crates/zed_extension_api` for the latest stable version
