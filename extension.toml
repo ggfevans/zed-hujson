@@ -7,5 +7,5 @@ description = "HuJSON (JWCC) support — JSON with comments and trailing commas"
 repository = "https://github.com/ggfevans/zed-hujson"
 
 [grammars.hujson]
-repository = "https://github.com/ggfevans/zed-hujson"
-path = "grammars/hujson"
+repository = "https://github.com/ggfevans/tree-sitter-hujson"
+rev = "af2e6d7d0d5497b77af0dd97fa7383ad03072dcb"

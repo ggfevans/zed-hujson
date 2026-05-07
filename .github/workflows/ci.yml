@@ -10,28 +10,13 @@ permissions:
   contents: read
 
 jobs:
-  grammar-test:
-    name: Grammar Tests
+  query-audit:
+    name: Query Audit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Install tree-sitter-cli
-        run: npm install -g tree-sitter-cli
-
-      - name: Generate parser
-        working-directory: grammars/hujson
-        run: tree-sitter generate
-
-      - name: Run corpus tests
-        working-directory: grammars/hujson
-        run: tree-sitter test
-
-      - name: Audit Zed queries against generated grammar
+      - name: Audit Zed queries against pinned grammar revision
         run: scripts/check-queries.sh
 
   extension-build:

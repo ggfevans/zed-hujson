@@ -25,9 +25,9 @@ For development, clone this repo and use **Extensions > Install Dev Extension** 
 
 ## Grammar
 
-The Tree-sitter grammar is a fork of [tree-sitter-json](https://github.com/tree-sitter/tree-sitter-json) with a single modification: the `commaSep` helper tolerates an optional trailing comma. The upstream grammar already supports comments.
+The Tree-sitter grammar lives in its own repo at [`ggfevans/tree-sitter-hujson`](https://github.com/ggfevans/tree-sitter-hujson). It is a fork of [tree-sitter-json](https://github.com/tree-sitter/tree-sitter-json) (forked at [`001c28d`](https://github.com/tree-sitter/tree-sitter-json/commit/001c28d7a29832b06b0e831ec77845553c89b56d)) with a single semantic change: the `commaSep` helper tolerates an optional trailing comma. The upstream grammar already supports comments.
 
-Forked from tree-sitter-json at [`001c28d`](https://github.com/tree-sitter/tree-sitter-json/commit/001c28d7a29832b06b0e831ec77845553c89b56d).
+This extension references the grammar by URL + rev in `extension.toml`. To bump the pinned grammar revision, edit `[grammars.hujson] rev = "…"` and re-run `scripts/check-queries.sh`.
 
 ## Compatibility
 
@@ -46,15 +46,16 @@ Forked from tree-sitter-json at [`001c28d`](https://github.com/tree-sitter/tree-
 ### Build
 
 ```bash
-# regenerate the parser and run the corpus suite
-(cd grammars/hujson && tree-sitter generate && tree-sitter test)
-
 # build the extension to WASM
 cargo build --release --target wasm32-wasip2
 
-# audit Zed query files against the generated grammar
+# audit Zed query files against the pinned grammar revision
+# (clones tree-sitter-hujson at the rev in extension.toml on first run;
+#  cached under target/grammar-cache/<rev>/)
 scripts/check-queries.sh
 ```
+
+To work on the grammar itself, see [`ggfevans/tree-sitter-hujson`](https://github.com/ggfevans/tree-sitter-hujson). After a grammar change, push a new commit there and bump `[grammars.hujson] rev` in this repo's `extension.toml`.
 
 ### Install in Zed
 

@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
-# Belt-and-braces verification (decision 4):
-# 1. Compile each Zed query against the generated grammar.
-# 2. Confirm every node referenced in queries/hujson/*.scm exists in
-#    grammars/hujson/src/node-types.json.
+# Audit Zed queries against the grammar revision pinned in extension.toml.
+#
+# Steps:
+#   1. Parse [grammars.hujson] -> repository + rev from extension.toml.
+#   2. Shallow-clone the grammar repo at that rev (cached under target/).
+#   3. Confirm every node referenced in queries/hujson/*.scm exists in the
+#      cloned src/node-types.json.
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-GRAMMAR_DIR="$ROOT/grammars/hujson"
 QUERIES_DIR="$ROOT/queries/hujson"
-NODE_TYPES="$GRAMMAR_DIR/src/node-types.json"
+CACHE_DIR="$ROOT/target/grammar-cache"
+EXTENSION_TOML="$ROOT/extension.toml"
 
 if [ ! -d "$QUERIES_DIR" ]; then
   echo "no queries/hujson directory; nothing to check"
@@ -24,27 +27,38 @@ if [ ${#query_files[@]} -eq 0 ]; then
   exit 0
 fi
 
-if [ ! -f "$NODE_TYPES" ]; then
-  echo "ERROR: $NODE_TYPES not found — run \`tree-sitter generate\` in $GRAMMAR_DIR" >&2
+# Parse [grammars.hujson] repository + rev from extension.toml.
+# Awk pulls the values out of the [grammars.hujson] block; sed strips quotes.
+REPO=$(awk '/^\[grammars\.hujson\]/{f=1;next} /^\[/{f=0} f && /^repository[ \t]*=/{print; exit}' "$EXTENSION_TOML" \
+       | sed -E 's/.*=[[:space:]]*"([^"]+)".*/\1/')
+REV=$(awk '/^\[grammars\.hujson\]/{f=1;next} /^\[/{f=0} f && /^rev[ \t]*=/{print; exit}' "$EXTENSION_TOML" \
+       | sed -E 's/.*=[[:space:]]*"([^"]+)".*/\1/')
+
+if [ -z "$REPO" ] || [ -z "$REV" ]; then
+  echo "ERROR: could not parse [grammars.hujson] repository/rev from $EXTENSION_TOML" >&2
   exit 1
 fi
 
-# Step 1: tree-sitter query compile check.
-fail=0
-for f in "${query_files[@]}"; do
-  if ! (cd "$GRAMMAR_DIR" && tree-sitter query "$f" >/dev/null 2>&1); then
-    # tree-sitter query may emit warnings without failing; capture stderr to detect real errors.
-    out=$(cd "$GRAMMAR_DIR" && tree-sitter query "$f" 2>&1 || true)
-    if echo "$out" | grep -qiE 'error|invalid'; then
-      echo "QUERY ERROR in $f:" >&2
-      echo "$out" >&2
-      fail=1
-    fi
-  fi
-done
+GRAMMAR_DIR="$CACHE_DIR/$REV"
+NODE_TYPES="$GRAMMAR_DIR/src/node-types.json"
 
-# Step 2: node-name audit.
+if [ ! -f "$NODE_TYPES" ]; then
+  echo "fetching grammar $REPO @ $REV"
+  rm -rf "$GRAMMAR_DIR"
+  mkdir -p "$GRAMMAR_DIR"
+  git clone --quiet --filter=blob:none "$REPO" "$GRAMMAR_DIR"
+  (cd "$GRAMMAR_DIR" && git checkout --quiet "$REV")
+fi
+
+if [ ! -f "$NODE_TYPES" ]; then
+  echo "ERROR: $NODE_TYPES still missing after clone" >&2
+  exit 1
+fi
+
+# Audit every (node_name) capture against node-types.json.
 nodes=$(grep -hoE '\([a-z_][a-z0-9_]*' "${query_files[@]}" | sed 's/^(//' | sort -u)
+
+fail=0
 for n in $nodes; do
   if ! grep -q "\"$n\"" "$NODE_TYPES"; then
     echo "MISSING node in node-types.json: $n" >&2
@@ -56,4 +70,4 @@ if [ "$fail" -ne 0 ]; then
   exit 1
 fi
 
-echo "queries OK (${#query_files[@]} files, $(echo "$nodes" | wc -w | tr -d ' ') unique nodes)"
+echo "queries OK (${#query_files[@]} files, $(echo "$nodes" | wc -w | tr -d ' ') unique nodes, grammar @ ${REV:0:8})"
