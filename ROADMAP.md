@@ -22,6 +22,12 @@ Provide diagnostics + completions for JWCC documents that have an associated sch
 - Wire `language_ids` so the server sees `HuJSON` buffers as `jsonc` or `json` per its expectations.
 - Provide a default schema mapping for common HuJSON consumers (Tailscale ACL, `tailscale.json`, etc.).
 
+## v0.x — Markdown fenced-block injection
+
+Render `` ```hujson `` fenced code blocks inside Markdown (and other host languages) with HuJSON highlighting.
+
+The grammar already declares `injection-regex = "hujson"` in `tree-sitter.json`, so injection from a host language with `injections.scm` mapping `hujson` → our language *should* work. Needs verification in Zed: open a markdown file with a `` ```hujson `` block referencing the sample and confirm highlighting flows through. If Zed's markdown extension doesn't recognise it, options are (a) submit a small registration patch upstream, or (b) ship a `languages/hujson/injections.scm` that registers HuJSON as an injection target on our side.
+
 ## Beyond v0.3
 
 - `.jwcc` file-extension association alongside `.hujson` (gate on real-world demand).

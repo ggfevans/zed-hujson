@@ -2,12 +2,16 @@
 
 A [Zed](https://zed.dev) extension providing syntax highlighting and editor support for [HuJSON](https://github.com/tailscale/hujson) (Human JSON).
 
-HuJSON is a superset of JSON defined by the [JWCC](https://nigeltao.github.io/blog/2021/json-with-commas-comments.html) (JSON With Commas and Comments) specification. It adds exactly two features to standard JSON:
+HuJSON is a superset of JSON defined by the [JWCC](https://nigeltao.github.io/blog/2021/json-with-commas-comments.html) (JSON With Commas and Comments) specification. From the JWCC docs:
 
-- **C-style comments** — line comments (`//`) and block comments (`/* */`)
-- **Trailing commas** — optional trailing comma after the last element in arrays and objects
+> The JWCC format permits two things over standard JSON:
+>
+> 1. C-style line comments and block comments intermixed with whitespace.
+> 2. Trailing commas after the last member/element in an object/array.
+>
+> All JSON is valid JWCC.
 
-All valid JSON is valid HuJSON. HuJSON intentionally rejects all other extensions (unquoted keys, hex literals, etc.).
+HuJSON intentionally rejects all other extensions (unquoted keys, hex literals, `Infinity`/`NaN`, single-quoted strings, etc.) — strictness is preserved beyond those two additions.
 
 ## Features (v0.1)
 

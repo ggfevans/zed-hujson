@@ -2,6 +2,7 @@ node_modules/
 target/
 build/
 *.wasm
+extension.wasm
 
 # Zed dev-install build cache (grammar is cloned from tree-sitter-hujson here)
 grammars/
