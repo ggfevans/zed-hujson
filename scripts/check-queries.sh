@@ -31,7 +31,7 @@ fi
 # Awk pulls the values out of the [grammars.hujson] block; sed strips quotes.
 REPO=$(awk '/^\[grammars\.hujson\]/{f=1;next} /^\[/{f=0} f && /^repository[ \t]*=/{print; exit}' "$EXTENSION_TOML" \
        | sed -E 's/.*=[[:space:]]*"([^"]+)".*/\1/')
-REV=$(awk '/^\[grammars\.hujson\]/{f=1;next} /^\[/{f=0} f && /^rev[ \t]*=/{print; exit}' "$EXTENSION_TOML" \
+REV=$(awk '/^\[grammars\.hujson\]/{f=1;next} /^\[/{f=0} f && /^(commit|rev)[ \t]*=/{print; exit}' "$EXTENSION_TOML" \
        | sed -E 's/.*=[[:space:]]*"([^"]+)".*/\1/')
 
 if [ -z "$REPO" ] || [ -z "$REV" ]; then
