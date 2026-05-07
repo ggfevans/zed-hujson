@@ -1,0 +1,39 @@
+// Example HuJSON document — a Tailscale-ACL-flavoured snippet
+// demonstrating comments and trailing commas.
+{
+  // Group definitions
+  "groups": {
+    "group:admins": [
+      "alice@example.com",
+      "bob@example.com",
+    ],
+    "group:devs": [
+      "carol@example.com", // backend
+      "dave@example.com",  // frontend
+    ],
+  },
+
+  /* ACL rules — order matters; first match wins. */
+  "acls": [
+    {
+      "action": "accept",
+      "src":    ["group:admins"],
+      "dst":    ["*:*"],
+    },
+    {
+      "action": "accept",
+      "src":    ["group:devs"],
+      "dst":    [
+        "tag:dev:22",
+        "tag:dev:80",
+        "tag:dev:443",
+      ],
+    },
+  ],
+
+  // Tag ownership
+  "tagOwners": {
+    "tag:dev":  ["group:admins"],
+    "tag:prod": ["group:admins"],
+  },
+}

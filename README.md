@@ -29,6 +29,45 @@ The Tree-sitter grammar is a fork of [tree-sitter-json](https://github.com/tree-
 
 Forked from tree-sitter-json at [`001c28d`](https://github.com/tree-sitter/tree-sitter-json/commit/001c28d7a29832b06b0e831ec77845553c89b56d).
 
+## Compatibility
+
+- This extension only handles `.hujson` files.
+- `.json` and `.jsonc` are left to Zed's built-in grammars.
+- The grammar id `hujson` is distinct from `json` / `jsonc`, so installing this extension will not interfere with built-in JSON support.
+
+## Development
+
+### Prerequisites
+
+- Node 18+ and `tree-sitter-cli` (`npm i -g tree-sitter-cli`)
+- Rust stable with the WASM target (`rustup target add wasm32-wasip2`)
+- Zed Preview channel (for the dev-extension installer)
+
+### Build
+
+```bash
+# regenerate the parser and run the corpus suite
+(cd grammars/hujson && tree-sitter generate && tree-sitter test)
+
+# build the extension to WASM
+cargo build --release --target wasm32-wasip2
+
+# audit Zed query files against the generated grammar
+scripts/check-queries.sh
+```
+
+### Install in Zed
+
+Open Zed → **Extensions** → **Install Dev Extension** → select the repo root.
+
+### Reload after edits
+
+`Cmd/Ctrl+Shift+P` → `zed: reload extensions`.
+
+### Try it out
+
+A sample document is provided at [`examples/sample.hujson`](examples/sample.hujson) — open it in Zed to verify highlighting, bracket matching, and trailing-comma tolerance.
+
 ## Licence
 
 [MIT](LICENSE) — matches the upstream tree-sitter-json licence.

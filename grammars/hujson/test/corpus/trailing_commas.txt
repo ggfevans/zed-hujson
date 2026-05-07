@@ -155,3 +155,23 @@ Trailing comma in empty array is ERROR
 (document
   (array
     (ERROR)))
+
+==================
+Block comment between last element and trailing comma
+==================
+
+{
+  "a": 1
+  /*
+    comment
+  */,
+}
+
+---
+
+(document
+  (object
+    (pair
+      key: (string (string_content))
+      value: (number))
+    (comment)))

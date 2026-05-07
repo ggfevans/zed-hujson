@@ -85,3 +85,71 @@ Unicode in comments
     (pair
       key: (string (string_content))
       value: (number))))
+
+==================
+Empty input
+==================
+
+
+
+---
+
+(document)
+
+==================
+Whitespace only
+==================
+
+
+
+---
+
+(document)
+
+==================
+Line comment only
+==================
+
+// a standalone comment
+
+---
+
+(document
+  (comment))
+
+==================
+Block comment only
+==================
+
+/* a standalone comment */
+
+---
+
+(document
+  (comment))
+
+==================
+Deeply nested object
+==================
+
+{"a": {"b": {"c": {"d": {"e": 1}}}}}
+
+---
+
+(document
+  (object
+    (pair
+      key: (string (string_content))
+      value: (object
+        (pair
+          key: (string (string_content))
+          value: (object
+            (pair
+              key: (string (string_content))
+              value: (object
+                (pair
+                  key: (string (string_content))
+                  value: (object
+                    (pair
+                      key: (string (string_content))
+                      value: (number))))))))))))

@@ -31,6 +31,9 @@ jobs:
         working-directory: grammars/hujson
         run: tree-sitter test
 
+      - name: Audit Zed queries against generated grammar
+        run: scripts/check-queries.sh
+
   extension-build:
     name: Extension Build
     runs-on: ubuntu-latest
