@@ -12,7 +12,7 @@
 
 ; Object keys
 (pair
-  key: (string) @property.json_key)
+  key: (string) @property)
 
 ; Punctuation
 "{" @punctuation.bracket

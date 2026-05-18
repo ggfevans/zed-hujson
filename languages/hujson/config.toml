@@ -1,6 +1,6 @@
 name = "HuJSON"
 grammar = "hujson"
-path_suffixes = ["hujson"]
+path_suffixes = ["hujson", "jwcc"]
 line_comments = ["//"]
 block_comment = [ ["/*", "*/"]
 tab_size = 2
