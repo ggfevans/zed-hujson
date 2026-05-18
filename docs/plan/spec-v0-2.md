@@ -52,7 +52,7 @@ Trade-offs to be evaluated in the full spec: friction vs. control vs. distributi
 ## 5. UX
 
 - **Format Document** (`editor: format`) — full-buffer formatting via LSP.
-- **Format Selection** — range formatting if `hujsonfmt` supports it; else gracefully fall back to full-document with a notice.
+- **Format Selection** — range formatting if `hujsonfmt` supports it; else fall back to full-document with a notice (or surface an error with actionable guidance if `hujsonfmt` is missing or fails to start).
 - **Format-on-save** — opt-in via Zed's `format_on_save` setting, scoped to HuJSON.
 - **Error UX** — if `hujsonfmt` rejects the buffer (e.g. invalid HuJSON), surface the error via standard LSP diagnostics; do not silently corrupt the buffer.
 
@@ -70,7 +70,7 @@ Trade-offs to be evaluated in the full spec: friction vs. control vs. distributi
 1. Does `hujsonfmt` need a separate LSP wrapper, or can the extension act as a minimal adapter? (§2)
 2. Install strategy: require `$PATH`, auto-install via `go install`, or bundled binary? (§4)
 3. Version pinning: pin a known-good `hujsonfmt` version, or rely on `@latest`? Implication: reproducibility vs. friction.
-4. Behaviour when `hujsonfmt` is missing or fails to start: degrade silently to a no-op formatter, or surface a persistent error?
+4. Behaviour when `hujsonfmt` is missing or fails to start: MUST surface a clear, persistent error with actionable guidance (e.g., install/start hujsonfmt or configure a fallback formatter).
 5. Range formatting support: does `hujsonfmt` accept partial-document input? If not, what's the fallback for **Format Selection**?
 6. Concurrent invocations: is one `hujsonfmt` process per buffer or shared across buffers?
 7. Schema / config: any per-project `hujsonfmt` settings to expose (indent width, sort keys, etc.)?
