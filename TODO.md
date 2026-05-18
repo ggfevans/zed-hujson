@@ -10,7 +10,7 @@ Blocks the v0.1 promise (working highlighting in dev-mode). Cross-repo: items ma
 
 ### Diagnose first (§14.3)
 
-- [ ] Clone pinned grammar at `af2e6d7d0d5497b77af0dd97fa7383ad03072dcb`; run the artefact inventory loop.
+- [ ] Clone pinned grammar at `69e5e147274d91608f146c7ecc6d0821a390d951` (tag `v0.1.0`); run the artefact inventory loop. A passing run prints `OK $f` for each of the 10 expected artefacts (grammar.js, tree-sitter.json, package.json, src/parser.c, src/node-types.json, src/grammar.json, queries/highlights.scm, queries/brackets.scm, queries/indents.scm, queries/outline.scm). Any `MISSING $f` line is a failure.
 - [ ] `tree-sitter parse examples/sample.hujson` against pinned grammar — record output.
 - [ ] `tree-sitter query queries/highlights.scm examples/sample.hujson` against pinned grammar — record any "unknown node type" errors.
 - [ ] Capture Zed log on extension reload; grep for `hujson|grammar|tree-sitter|wasm`.
@@ -32,7 +32,7 @@ Blocks the v0.1 promise (working highlighting in dev-mode). Cross-repo: items ma
 
 - [ ] `git rm -r grammars/hujson/` (orphan from pre-`cf8d0d1`).
 - [ ] `git rm -r queries/hujson/` (includes the malformed `indents.scm`).
-- [ ] Bump `extension.toml` `[grammars.hujson] commit = …` to the audited SHA from the grammar tag.
+- [x] Bump `extension.toml` `[grammars.hujson] commit = …` to the audited SHA from the grammar tag. — Pinned to `69e5e14` (v0.1.0); §14.3 programmatic checks pass.
 - [ ] Re-run §14.3 diagnostic recipe against the new SHA — all checks must pass.
 - [ ] README — add "Grammar source" section pointing at `tree-sitter-hujson` for grammar/query edits.
 - [ ] README — add "Bumping the grammar pin" subsection mirroring the procedure in §14.5.
@@ -53,7 +53,7 @@ Blocks the v0.1 promise (working highlighting in dev-mode). Cross-repo: items ma
 
 Items spec-v0-1.md flagged for resolution at implementation time but not yet recorded as resolved.
 
-- [ ] §4.4 Decision 2 — confirm `zed_extension_api` version pinned in `Cargo.toml`; update §4.4 in the spec with the actual value used.
+- [ ] Document resolved Decision 2: record `zed_extension_api = "0.7.0"` from `Cargo.toml` into §4.4 of the spec. Decision 2 is resolved — this task is a documentation update, not a new decision.
 - [ ] §4.3 Decision 3 — verify `Extension` trait shape against docs.rs for the pinned `zed_extension_api`; ensure no-op stubs exist for any required methods beyond `new()`.
 - [ ] §7.3 Decision 5 step 2 — README "Compatibility" section explicitly stating this extension only handles `.hujson`; `.json`/`.jsonc` left to Zed built-ins; grammar id `hujson` distinct from `json`/`jsonc`.
 - [ ] §9.1 — refresh CI description in the spec: post-extraction the `grammar-test` job moved to the grammar repo; this repo runs `extension-build`, `lint`, `query-audit`. (CHANGELOG already records this; spec §9.1 is stale.)
@@ -77,5 +77,4 @@ Sequenced after P0/P1. Out of scope for the highlighting fix itself.
 ## Notes
 
 - This file tracks **only spec-v0-1.md** remaining items. v0.2 work is tracked separately in `docs/plan/spec-v0-2.md` (currently outline-only).
-- The pre-existing `docs/plan/todo.md` is a longer-form working list and is not superseded by this file.
-- When an item lands, check it off here AND, if it resolves an open question in the spec, update the corresponding §13 Decision Log entry inline.
+- `docs/plan/todo.md` was the original 18-phase implementation checklist; it has been consolidated into this file. The detailed per-prompt gates and pre-flight checks are captured by the spec sections they reference. When an item lands, check it off here AND, if it resolves an open question in the spec, update the corresponding §13 Decision Log entry inline.

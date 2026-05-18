@@ -66,7 +66,7 @@ The extension references the grammar by repository URL + commit SHA in `extensio
 - Grammar lifecycle (parser regen, upstream syncs) is decoupled from extension lifecycle (Zed API bumps, language config tweaks).
 - Aligns with Zed's grammar-loading conventions for published registry extensions.
 
-```
+```text
 zed-hujson/                         # this repo (extension only)
 ├── extension.toml                  # Zed extension manifest (references external grammar)
 ├── LICENSE                         # MIT
@@ -98,7 +98,7 @@ zed-hujson/                         # this repo (extension only)
         └── ci.yml                  # extension-build + lint + query-audit
 ```
 
-```
+```text
 tree-sitter-hujson/                 # external repo (grammar)
 ├── grammar.js                      # Grammar definition (forked from tree-sitter-json)
 ├── tree-sitter.json                # CLI config (scope, file-types, highlights path)
@@ -253,7 +253,7 @@ repository = "https://github.com/ggfevans/zed-hujson"
 
 [grammars.hujson]
 repository = "https://github.com/ggfevans/tree-sitter-hujson"
-commit = "af2e6d7d0d5497b77af0dd97fa7383ad03072dcb"   # bump per §14.5 after grammar audit
+commit = "69e5e147274d91608f146c7ecc6d0821a390d951"   # v0.1.0 tag; §14.6 query audit passed
 ```
 
 > **Decision 1 (revised, post-`cf8d0d1`):** the grammar lives in a **separate repository** (`ggfevans/tree-sitter-hujson`). `[grammars.hujson]` references it by `repository` + `commit`; no `path` key. See §13 Decision 6 for the full rationale and §14.5 for the pin-bump procedure.
@@ -764,11 +764,11 @@ This regression was introduced (or exposed) by commit `cf8d0d1` ("restructure: e
 
 Per the project's debugging protocol — list, gather evidence, then fix. **Do not apply speculative fixes.**
 
-**H1 — External grammar at pinned commit `af2e6d7d` is not buildable by Zed.**
+**H1 — External grammar at pinned commit `69e5e14` is not buildable by Zed.**
 - Possible failure modes: `src/parser.c` not committed at that SHA; `parser.c` out of sync with `grammar.js`; `tree-sitter.json` `highlights` path resolves to a missing file; Zed's grammar fetcher silently errors on first load.
 - Evidence to gather:
-  - `git clone https://github.com/ggfevans/tree-sitter-hujson /tmp/ts-hujson && git -C /tmp/ts-hujson checkout af2e6d7d0d5497b77af0dd97fa7383ad03072dcb`
-  - Confirm presence of `src/parser.c`, `src/node-types.json`, `src/grammar.json`, `src/tree_sitter/`, `queries/highlights.scm`, `tree-sitter.json`.
+  - `git clone https://github.com/ggfevans/tree-sitter-hujson /tmp/ts-hujson && git -C /tmp/ts-hujson checkout 69e5e147274d91608f146c7ecc6d0821a390d951`
+  - Confirm presence of `src/parser.c`, `src/node-types.json`, `src/grammar.json`, `src/tree_sitter/`, `queries/highlights.scm`, `queries/brackets.scm`, `queries/indents.scm`, `queries/outline.scm`, `tree-sitter.json`.
   - `tree-sitter parse /Users/gvns/code/projects/zed-hujson/examples/sample.hujson` (run from `/tmp/ts-hujson`) — should produce a tree with no `ERROR` nodes.
   - In Zed: open Dev → Open Log; reload the extension; capture grammar-fetch / parser-build / WASM messages.
 - Confirms H1 if: log shows fetch/build failure, OR `parser.c` is missing/stale, OR `tree-sitter parse` errors at the pinned SHA.
@@ -792,25 +792,31 @@ Per the project's debugging protocol — list, gather evidence, then fix. **Do n
 Run **before** writing any fix. Captures evidence to assign root cause to H1 vs H2.
 
 ```bash
+# Set SAMPLE_FILE to the path of your local sample before running this recipe.
+# Default assumes the extension repo is next to the grammar clone:
+SAMPLE_FILE="${SAMPLE_FILE:-../zed-hujson/examples/sample.hujson}"
+
 # 1. Clone pinned external grammar
 git clone https://github.com/ggfevans/tree-sitter-hujson /tmp/ts-hujson
 cd /tmp/ts-hujson
-git checkout af2e6d7d0d5497b77af0dd97fa7383ad03072dcb
+git checkout 69e5e147274d91608f146c7ecc6d0821a390d951
 
 # 2. Inventory expected artefacts (each must exist)
 for f in grammar.js tree-sitter.json package.json \
          src/parser.c src/node-types.json src/grammar.json \
-         queries/highlights.scm; do
+         queries/highlights.scm queries/brackets.scm queries/indents.scm queries/outline.scm; do
   test -f "$f" && echo "OK  $f" || echo "MISSING $f"
 done
 
-# 3. Parse the real-world sample (from the extension repo)
-npx tree-sitter parse /Users/gvns/code/projects/zed-hujson/examples/sample.hujson
+# 3. Parse the real-world sample
+npx tree-sitter parse "$SAMPLE_FILE"
 # Expect: zero (ERROR ...) nodes, root is (document ...)
 
-# 4. Run highlights query against the sample — fails on any unknown node name
-npx tree-sitter query queries/highlights.scm \
-    /Users/gvns/code/projects/zed-hujson/examples/sample.hujson
+# 4. Run each query against the sample — fails on any unknown node name
+for q in highlights brackets indents outline; do
+  echo "--- queries/$q.scm ---"
+  npx tree-sitter query "queries/$q.scm" "$SAMPLE_FILE"
+done
 
 # 5. Capture Zed log on extension reload
 #    In Zed: cmd-shift-p → "zed: open log"
@@ -898,4 +904,13 @@ Optional: capture before/after screenshots; attach to the PR closing this addend
 - `.jwcc` file-extension association.
 - Markdown fenced-block injection.
 - Refactoring the malformed root `queries/hujson/indents.scm` — it is removed wholesale by §14.5.
+
+### 14.9 Rollback Plan
+
+If the pinned grammar commit causes highlighting failures or regressions:
+
+1. **Revert the pin** — change `[grammars.hujson] commit` in `extension.toml` back to the last known-good SHA and commit immediately.
+2. **Re-run verification** — follow the §14.7 recipe to confirm highlighting works on the rolled-back SHA.
+3. **Open incident issues** — file issues in both `ggfevans/tree-sitter-hujson` and `ggfevans/zed-hujson` with the diagnostic output from §14.3.
+4. **Do not forward-fix** — before promoting a new SHA, re-run the full §14.3 diagnostic protocol against the candidate. Do not skip steps.
 
