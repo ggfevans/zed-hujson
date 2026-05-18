@@ -9,3 +9,6 @@ grammars/
 
 # agent scaffolding
 session-handoff.md
+
+# worktrees
+.claude/worktrees/

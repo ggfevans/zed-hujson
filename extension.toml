@@ -8,4 +8,4 @@ repository = "https://github.com/ggfevans/zed-hujson"
 
 [grammars.hujson]
 repository = "https://github.com/ggfevans/tree-sitter-hujson"
-commit = "af2e6d7d0d5497b77af0dd97fa7383ad03072dcb"
+commit = "69e5e147274d91608f146c7ecc6d0821a390d951"

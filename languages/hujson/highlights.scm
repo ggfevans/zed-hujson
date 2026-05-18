@@ -10,10 +10,9 @@
 (false) @constant.builtin
 (null) @constant.builtin
 
-; Object keys. @property is a fallback for themes that don't define
-; @property.json_key (Zed resolves capture lists right-to-left).
+; Object keys
 (pair
-  key: (string) @property.json_key @property)
+  key: (string) @property.json_key)
 
 ; Punctuation
 "{" @punctuation.bracket
