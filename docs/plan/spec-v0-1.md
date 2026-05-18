@@ -79,7 +79,11 @@ zed-hujson/                         # this repo (extension only)
 │
 ├── languages/
 │   └── hujson/
-│       └── config.toml             # Zed language configuration
+│       ├── config.toml             # Zed language configuration
+│       ├── highlights.scm          # Syntax highlighting queries (runtime copy)
+│       ├── brackets.scm            # Bracket matching queries
+│       ├── indents.scm             # Indentation queries
+│       └── outline.scm             # Outline (object key) queries
 │
 ├── examples/
 │   └── sample.hujson               # Tailscale-ACL-flavoured smoke-test sample
@@ -333,7 +337,11 @@ lto = true
 
 ## 5. Syntax Queries
 
-> **Path note (post-`cf8d0d1`):** the query files described below now live in the external grammar repo at [`ggfevans/tree-sitter-hujson`](https://github.com/ggfevans/tree-sitter-hujson) under `queries/*.scm` — **not** under this repo's `queries/hujson/` (which is removed; see §14.5). The S-expression contents below remain the source of truth for what the queries should contain. Subsection headings keep the historic `queries/hujson/...` paths for traceability.
+> **Path note (post-`cf8d0d1`, revised 2026-05-18):** Query files exist in **two locations**:
+> 1. **Grammar repo** (`ggfevans/tree-sitter-hujson` `queries/*.scm`) — canonical source, used by `tree-sitter` CLI for testing.
+> 2. **Extension repo** (`languages/hujson/*.scm`) — runtime copies that Zed loads at extension install time.
+>
+> Zed resolves `.scm` queries from the extension's `languages/<grammar-name>/` directory, **not** from the grammar repo. After editing queries in the grammar repo, copy the updated files to `languages/hujson/` in this repo and reinstall the dev extension. The S-expression contents below remain the source of truth for what the queries should contain.
 
 All query files use Tree-sitter's S-expression format. These should be adapted from Zed's built-in JSONC queries, adjusted for the HuJSON node names produced by the forked grammar.
 
@@ -782,10 +790,11 @@ Per the project's debugging protocol — list, gather evidence, then fix. **Do n
 - Confirms H2 if: any query references an absent node.
 - Rules out H2 if: all node names resolve and `tree-sitter query` runs cleanly.
 
-**H3 — Orphan local `queries/hujson/` and `grammars/hujson/` mislead, but don't cause the symptom.**
-- Zed loads queries from the cached external grammar, not from extension-root `queries/hujson/`. The orphan directories are dead code: maintenance hazard, not a runtime cause.
-- Evidence: confirmed by file inventory in the diagnostic that produced this addendum (the pinned external grammar's `queries/` is what Zed reads).
-- Action regardless of H1/H2 outcomes: delete the orphans (§14.5).
+**H3 — ~~Orphan local `queries/hujson/` and `grammars/hujson/` mislead, but don't cause the symptom.~~ REVISED — queries must live in `languages/hujson/`.**
+- ~~Zed loads queries from the cached external grammar, not from extension-root `queries/hujson/`.~~ **Correction (2026-05-18):** Zed resolves `.scm` query files from the extension's `languages/<grammar-name>/` directory, **not** from the grammar repo's `queries/` directory. The grammar repo's `queries/*.scm` files are used by the `tree-sitter` CLI for testing; Zed's extension loader only reads queries from `languages/`. Without `.scm` files in `languages/hujson/`, the extension registers the language but applies no highlighting rules.
+- This was the **actual root cause** of the missing highlighting. The `languages/hujson/` directory only contained `config.toml` — all four `.scm` files were absent.
+- Fix: copy `queries/*.scm` from the grammar repo into `languages/hujson/` and track them in the extension repo. The grammar repo's `queries/` remains the canonical source; the extension repo's `languages/hujson/*.scm` are the runtime copies.
+- Orphan `queries/hujson/` and `grammars/hujson/` directories are still dead code to remove (§14.5).
 
 ### 14.3 Diagnostic Recipe
 

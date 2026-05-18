@@ -30,14 +30,15 @@ Blocks the v0.1 promise (working highlighting in dev-mode). Cross-repo: items ma
 
 ### Extension repo work (§14.5)
 
-- [ ] `git rm -r grammars/hujson/` (orphan from pre-`cf8d0d1`).
-- [ ] `git rm -r queries/hujson/` (includes the malformed `indents.scm`).
+- [x] `git rm -r grammars/hujson/` (orphan from pre-`cf8d0d1`). — Removed (directory with its own `.git/`; not tracked by parent repo).
+- [x] `git rm -r queries/hujson/` (includes the malformed `indents.scm`). — Removed.
 - [x] Bump `extension.toml` `[grammars.hujson] commit = …` to the audited SHA from the grammar tag. — Pinned to `69e5e14` (v0.1.0); §14.3 programmatic checks pass.
 - [ ] Re-run §14.3 diagnostic recipe against the new SHA — all checks must pass.
 - [ ] README — add "Grammar source" section pointing at `tree-sitter-hujson` for grammar/query edits.
 - [ ] README — add "Bumping the grammar pin" subsection mirroring the procedure in §14.5.
 - [ ] CI — verify `query-audit` job *fails* the build on grammar/query mismatch (not just warns); `scripts/check-queries.sh` is the source of truth.
 - [ ] Decide `extension.wasm` policy: keep committed + document rebuild, or `.gitignore` it + build in CI. Update README accordingly.
+- [ ] Copy `queries/*.scm` from grammar repo to `languages/hujson/` after any grammar query changes (Zed loads queries from `languages/<grammar>/`, not from the grammar repo).
 
 ### Acceptance + verification (§14.4, §14.7)
 
