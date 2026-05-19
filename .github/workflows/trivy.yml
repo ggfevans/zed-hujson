@@ -1,0 +1,84 @@
+name: Trivy Security Scan
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Mondays 02:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trivy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  trivy:
+    name: Trivy (fs + config + secret)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trivy fs scan
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@v0.28.0
+        with:
+          scan-type: fs
+          format: sarif
+          output: trivy-results-fs.sarif
+          exit-code: '0'
+          ignore-unfixed: false
+
+      - name: Trivy config scan
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@v0.28.0
+        with:
+          scan-type: config
+          format: sarif
+          output: trivy-results-config.sarif
+          exit-code: '0'
+
+      - name: Trivy secret scan
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@v0.28.0
+        with:
+          scan-type: fs
+          scanners: secret
+          format: sarif
+          output: trivy-results-secret.sarif
+          exit-code: '0'
+
+      - name: Upload fs SARIF
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results-fs.sarif
+          category: trivy-fs
+
+      - name: Upload config SARIF
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results-config.sarif
+          category: trivy-config
+
+      - name: Upload secret SARIF
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results-secret.sarif
+          category: trivy-secret
+
+      - name: Upload SARIF artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-sarif
+          path: trivy-results-*.sarif
+          retention-days: 14
