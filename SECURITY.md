@@ -2,19 +2,11 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in this project, please report it privately:
+Use GitHub's private vulnerability reporting:
 
-- **Email:** hi@gvns.ca
-- **Subject:** [security] zed-hujson: brief description
+**[Report a vulnerability](https://github.com/ggfevans/zed-hujson/security/advisories/new)**
 
-Please do not open a public GitHub issue for security vulnerabilities.
-
-Include the following in your report:
-
-- A description of the vulnerability
-- Steps to reproduce
-- Affected versions
-- Any potential impact
+Please do not open a public GitHub issue for security vulnerabilities. Private reports let us coordinate a fix before disclosure.
 
 We will acknowledge your report within 48 hours and provide a timeline for a fix.
 
