@@ -1,5 +1,5 @@
+# HuJSON for Zed
 
-## HuJSON for Zed
 A Zed extension providing syntax highlighting and editor support for HuJSON (Human JSON).
 HuJSON is a superset of JSON defined by the JWCC (JSON With Commas and Comments) specification. It permits C-style line or block comments and trailing commas in objects or arrays. All valid JSON is valid HuJSON. It strictly rejects other syntax extensions like unquoted keys or single-quoted strings.
 Unlike default JSON parsers that flag comments and trailing commas as syntax errors, this extension provides a valid Abstract Syntax Tree (AST). This preserves editor features like code folding, document symbols, and auto-formatting without throwing false error squiggles.
@@ -37,6 +37,7 @@ This extension is particularly useful for formats like Tailscale ACL policy file
 * Zed Preview (required for local extension loading)
 
 ## Build
+
 Compile the extension and verify the Tree-sitter queries against your pinned grammar:
 
 ```
@@ -54,4 +55,5 @@ cargo build --release --target wasm32-wasip2
 Use Extensions: Reload Extensions from the command palette to apply updates after making changes.
 
 ## License
+
 MIT
