@@ -24,7 +24,7 @@ jobs:
 
       - name: Trivy fs scan
         continue-on-error: true
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.28.0
         with:
           scan-type: fs
           format: sarif
@@ -34,7 +34,7 @@ jobs:
 
       - name: Trivy config scan
         continue-on-error: true
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.28.0
         with:
           scan-type: config
           format: sarif
@@ -43,7 +43,7 @@ jobs:
 
       - name: Trivy secret scan
         continue-on-error: true
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.28.0
         with:
           scan-type: fs
           scanners: secret
