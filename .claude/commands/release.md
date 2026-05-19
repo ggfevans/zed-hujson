@@ -14,7 +14,7 @@ CHANGELOG.md is the single source of truth — GitHub releases derive from it.
 | Git | add, commit, tag, push (to main) |
 | GitHub | None (GitHub Action handles release creation) |
 
-**Commands allowed:** `git log`, `git tag`, `gh pr list`, `gh issue list`, `sed`
+**Commands allowed:** `git log`, `git tag`, `git add`, `git commit`, `git push`, `git pull`, `git fetch`, `sed`, `awk`, `cargo`, `gh pr list`, `gh issue list`, `gh run`
 
 ---
 
@@ -239,10 +239,10 @@ Use the Edit tool to replace the version table:
 
 ```bash
 # Update extension.toml
-sed -i '' "s/^version = \"$CURRENT\"/version = \"$NEW_VERSION\"/" extension.toml
+sed -i.bak "s/^version = \"$CURRENT\"/version = \"$NEW_VERSION\"/" extension.toml && rm extension.toml.bak
 
 # Update Cargo.toml
-sed -i '' "s/^version = \"$CURRENT\"/version = \"$NEW_VERSION\"/" Cargo.toml
+sed -i.bak "s/^version = \"$CURRENT\"/version = \"$NEW_VERSION\"/" Cargo.toml && rm Cargo.toml.bak
 
 # Update Cargo.lock
 cargo generate-lockfile
