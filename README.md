@@ -22,6 +22,34 @@ The underlying parser lives at ggfevans/tree-sitter-hujson. It forks tree-sitter
 
 The extension pins this grammar by repository URL and commit hash in extension.toml. To update the pinned revision, update the commit value and run the query check script.
 
+## Formatting
+
+To enable format-on-save with [hujsonfmt](https://github.com/tailscale/hujson/tree/main/cmd/hujsonfmt), add the following to your Zed `settings.json`:
+
+```json
+{
+  "languages": {
+    "HuJSON": {
+      "formatter": {
+        "external": {
+          "command": "hujsonfmt",
+          "arguments": []
+        }
+      },
+      "format_on_save": "on"
+    }
+  }
+}
+```
+
+Install hujsonfmt with:
+
+```
+go install tailscale.com/cmd/hujsonfmt@latest
+```
+
+> **Note:** Zed extensions cannot yet register a default external formatter ([zed#31904](https://github.com/zed-industries/zed/issues/31904)). When that API lands, this extension will provide formatting out of the box with no manual config required.
+
 ## Compatibility
 
 This extension registers the `hujson` grammar ID. It isolates tracking to `.hujson` and `.jwcc` files. It does not conflict with or override Zed's built-in `json` or `jsonc` grammars.
