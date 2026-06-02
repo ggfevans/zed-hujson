@@ -24,7 +24,7 @@ The extension pins this grammar by repository URL and commit hash in extension.t
 
 ## Formatting
 
-To enable format-on-save with [hujsonfmt](https://github.com/tailscale/hujson/tree/main/cmd/hujsonfmt), add the following to your Zed `settings.json`:
+To enable format-on-save with [hujsonfmt](https://github.com/tailscale/hujson/tree/master/cmd/hujsonfmt), add the following to your Zed `settings.json`:
 
 ```json
 {
