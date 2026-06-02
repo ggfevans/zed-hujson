@@ -5,7 +5,10 @@ schema_version = 1
 description = "HuJSON (JWCC) support: JSON with comments and trailing commas"
 authors = ["Gareth Evans <hi@gvns.ca>"]
 repository = "https://github.com/ggfevans/zed-hujson"
+languages = ["languages/hujson"]
+
+[lib]
 
 [grammars.hujson]
 repository = "https://github.com/ggfevans/tree-sitter-hujson"
-commit = "69e5e147274d91608f146c7ecc6d0821a390d951"
+rev = "69e5e147274d91608f146c7ecc6d0821a390d951"
