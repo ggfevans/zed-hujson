@@ -12,3 +12,7 @@ session-handoff.md
 
 # worktrees
 .claude/worktrees/
+.worktree/
+
+# macOS
+.DS_Store
