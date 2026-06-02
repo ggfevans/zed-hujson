@@ -4,6 +4,10 @@ A Zed extension providing syntax highlighting and editor support for HuJSON (Hum
 HuJSON is a superset of JSON defined by the JWCC (JSON With Commas and Comments) specification. It permits C-style line or block comments and trailing commas in objects or arrays. All valid JSON is valid HuJSON. It strictly rejects other syntax extensions like unquoted keys or single-quoted strings.
 Unlike default JSON parsers that flag comments and trailing commas as syntax errors, this extension provides a valid Abstract Syntax Tree (AST). This preserves editor features like code folding, document symbols, and auto-formatting without throwing false error squiggles.
 
+<p align="center">
+  <img src="examples/zed-hujson-screenshot.png" alt="HuJSON syntax highlighting in Zed" width="800">
+</p>
+
 ## Features
 
 * Syntax highlighting via a dedicated Tree-sitter grammar
