@@ -1,1 +1,10 @@
-* text eol=lf
+* text=auto eol=lf
+
+# Binary assets — never apply EOL normalization (would corrupt the file)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.wasm binary
+*.pdf binary
