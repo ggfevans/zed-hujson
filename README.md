@@ -44,8 +44,8 @@ To enable format-on-save with [hujsonfmt](https://github.com/tailscale/hujson/tr
 
 Install hujsonfmt with:
 
-```
-go install tailscale.com/cmd/hujsonfmt@latest
+```bash
+go install github.com/tailscale/hujson/cmd/hujsonfmt@latest
 ```
 
 > **Note:** Zed extensions cannot yet register a default external formatter ([zed#31904](https://github.com/zed-industries/zed/issues/31904)). When that API lands, this extension will provide formatting out of the box with no manual config required.
