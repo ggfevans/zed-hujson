@@ -14,8 +14,8 @@ We will acknowledge your report within 48 hours and provide a timeline for a fix
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.0   | :white_check_mark: |
-| < 1.0.0 | :x:                |
+| 1.0.1   | :white_check_mark: |
+| < 1.0.1 | :x:                |
 
 ## Disclosure Policy
 
