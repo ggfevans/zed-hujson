@@ -1,5 +1,14 @@
 # HuJSON for Zed
 
+<p align="center">
+  <a href="https://github.com/ggfevans/zed-hujson/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ggfevans/zed-hujson/ci.yml?branch=main&style=flat-square&label=CI" alt="CI status"></a>
+  <a href="https://github.com/ggfevans/zed-hujson/releases/latest"><img src="https://img.shields.io/github/v/release/ggfevans/zed-hujson?style=flat-square" alt="Latest release"></a>
+  <a href="https://github.com/ggfevans/tree-sitter-hujson/releases/latest"><img src="https://img.shields.io/github/v/release/ggfevans/tree-sitter-hujson?style=flat-square&label=grammar" alt="Grammar version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License: MIT"></a>
+  <a href="https://github.com/ggfevans/zed-hujson/actions/workflows/trivy.yml"><img src="https://img.shields.io/github/actions/workflow/status/ggfevans/zed-hujson/trivy.yml?branch=main&style=flat-square&label=security" alt="Security scan"></a>
+  <a href="https://zed.dev/extensions"><img src="https://img.shields.io/badge/Zed-Extension-084CCF?style=flat-square&logo=zedindustries&logoColor=white" alt="Zed extension"></a>
+</p>
+
 A Zed extension providing syntax highlighting and editor support for HuJSON (Human JSON).
 HuJSON is a superset of JSON defined by the JWCC (JSON With Commas and Comments) specification. It permits C-style line or block comments and trailing commas in objects or arrays. All valid JSON is valid HuJSON. It strictly rejects other syntax extensions like unquoted keys or single-quoted strings.
 Unlike default JSON parsers that flag comments and trailing commas as syntax errors, this extension provides a valid Abstract Syntax Tree (AST). This preserves editor features like code folding, document symbols, and auto-formatting without throwing false error squiggles.
@@ -60,15 +69,33 @@ This extension registers the `hujson` grammar ID. It isolates tracking to `.hujs
 
 This extension is particularly useful for formats like Tailscale ACL policy files, which rely on HuJSON features that standard JSON parsers flag as syntax errors.
 
+## Markdown code blocks
+
+Fenced code blocks tagged `hujson` are highlighted inside Markdown documents with no extra setup. Zed matches the fence's info string to this extension by language name, so the Markdown grammar injects HuJSON highlighting for you — no `injections.scm` or grammar change required:
+
+````markdown
+```hujson
+{
+  // comments and trailing commas are highlighted here
+  "name": "tailscale-acl",
+  "hosts": { "server": "100.64.0.1", },
+}
+```
+````
+
+See [`examples/markdown-fence.md`](examples/markdown-fence.md) for a ready-to-open demo.
+
 ## Development
 
 ### Prerequisites
 
-* Node 18+ and tree-sitter-cli (npm i -g tree-sitter-cli)
-* Rust stable with the WebAssembly target (rustup target add wasm32-wasip2)
+* Rust stable with the WebAssembly target (`rustup target add wasm32-wasip2`)
 * Zed Preview (required for local extension loading)
+* `git` — the query check clones the pinned grammar
 
-## Build
+> Grammar development (changing `grammar.js`, regenerating the parser with `tree-sitter-cli`) happens in the separate [ggfevans/tree-sitter-hujson](https://github.com/ggfevans/tree-sitter-hujson) repository. This repository consumes the pre-generated grammar, so no `tree-sitter-cli` is needed here.
+
+### Build
 
 Compile the extension and verify the Tree-sitter queries against your pinned grammar:
 
@@ -77,7 +104,7 @@ cargo build --release --target wasm32-wasip2
 ./scripts/check-queries.sh
 ```
 
-## Local Testing
+### Local Testing
 
    1. Open the command palette in Zed (Cmd+Shift+P).
    2. Run Extensions: Install Dev Extension.
