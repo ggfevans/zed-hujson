@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.1] - 2026-06-03
 
+### Changed
+
+- Updated the pinned `tree-sitter-hujson` grammar to the v1.0.1 release (`506ab94`). Node types are unchanged, so syntax highlighting and queries behave identically; this realigns the extension with the latest grammar release. (#24)
+
 ### Added
 
 - README status badges (CI, latest release, grammar version, license, security scan, Zed extension). (#27)

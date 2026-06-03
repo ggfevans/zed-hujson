@@ -1,6 +1,6 @@
 id = "hujson"
 name = "HuJSON"
-version = "1.0.0"
+version = "1.0.1"
 schema_version = 1
 description = "HuJSON (JWCC) support: JSON with comments and trailing commas"
 authors = ["Gareth Evans <hi@gvns.ca>"]
@@ -11,4 +11,4 @@ languages = ["languages/hujson"]
 
 [grammars.hujson]
 repository = "https://github.com/ggfevans/tree-sitter-hujson"
-rev = "69e5e147274d91608f146c7ecc6d0821a390d951"
+rev = "506ab946025772028c0050d8c6b555ef5670f4b5"
