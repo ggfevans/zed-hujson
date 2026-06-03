@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.1] - 2026-06-03
 
+### Added
+
+- README status badges (CI, latest release, grammar version, license, security scan, Zed extension). (#27)
+- Documentation that Markdown ` ```hujson ` fenced code blocks highlight automatically via language-name matching, with an `examples/markdown-fence.md` demo. (#23)
+
 ### Fixed
 
 - `scripts/check-queries.sh` now audits `languages/hujson/*.scm` (where the Zed query files actually live) instead of the non-existent `queries/hujson/`, so the `query-audit` CI gate validates query node names against the pinned grammar instead of silently no-opping. (#25)
