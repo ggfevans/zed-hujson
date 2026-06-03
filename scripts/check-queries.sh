@@ -4,18 +4,18 @@
 # Steps:
 #   1. Parse [grammars.hujson] -> repository + rev from extension.toml.
 #   2. Shallow-clone the grammar repo at that rev (cached under target/).
-#   3. Confirm every node referenced in queries/hujson/*.scm exists in the
+#   3. Confirm every node referenced in languages/hujson/*.scm exists in the
 #      cloned src/node-types.json.
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-QUERIES_DIR="$ROOT/queries/hujson"
+QUERIES_DIR="$ROOT/languages/hujson"
 CACHE_DIR="$ROOT/target/grammar-cache"
 EXTENSION_TOML="$ROOT/extension.toml"
 
 if [ ! -d "$QUERIES_DIR" ]; then
-  echo "no queries/hujson directory; nothing to check"
+  echo "no languages/hujson directory; nothing to check"
   exit 0
 fi
 
