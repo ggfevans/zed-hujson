@@ -27,7 +27,19 @@ Unlike default JSON parsers that flag comments and trailing commas as syntax err
 
 ## Installation
 
-Open the Extensions view in Zed (Cmd+Shift+X), search for HuJSON, and click install.
+### Install as a dev extension (available now)
+
+HuJSON is awaiting publication to the Zed extension registry ([zed-industries/extensions#5937](https://github.com/zed-industries/extensions/pull/5937)). Until that merges, install it directly from this repository:
+
+1. Clone this repository.
+2. Open the command palette in Zed (Cmd+Shift+P) and run **Extensions: Install Dev Extension**.
+3. Select the cloned repository's root directory.
+
+That's it — `.hujson` and `.jwcc` files will highlight immediately. See [Local Testing](#local-testing) for the reload workflow.
+
+### From the Zed extension registry (once published)
+
+After [zed-industries/extensions#5937](https://github.com/zed-industries/extensions/pull/5937) merges, install it the usual way: open the Extensions view in Zed (Cmd+Shift+X), search for **HuJSON**, and click install.
 
 ## Grammar
 
