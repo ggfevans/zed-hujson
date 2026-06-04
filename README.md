@@ -31,7 +31,10 @@ Unlike default JSON parsers that flag comments and trailing commas as syntax err
 
 HuJSON is awaiting publication to the Zed extension registry ([zed-industries/extensions#5937](https://github.com/zed-industries/extensions/pull/5937)). Until that merges, install it directly from this repository:
 
-1. Clone this repository.
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/ggfevans/zed-hujson.git
+   ```
 2. Open the command palette in Zed (Cmd+Shift+P) and run **Extensions: Install Dev Extension**.
 3. Select the cloned repository's root directory.
 
