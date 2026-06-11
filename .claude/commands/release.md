@@ -14,7 +14,7 @@ CHANGELOG.md is the single source of truth — GitHub releases derive from it.
 | Git | add, commit, tag, push (to main) |
 | GitHub | None (GitHub Action handles release creation) |
 
-**Commands allowed:** `git log`, `git tag`, `git add`, `git commit`, `git push`, `git pull`, `git fetch`, `sed`, `awk`, `cargo`, `gh pr list`, `gh issue list`, `gh run`
+**Commands allowed:** `git log`, `git tag`, `git add`, `git commit`, `git push`, `git pull`, `git fetch`, `sed`, `awk`, `gh pr list`, `gh issue list`, `gh run`
 
 ---
 
@@ -62,7 +62,7 @@ START
   ├─ PHASE 4: Execute Release
   │   - Update CHANGELOG.md
   │   - Update SECURITY.md (supported version)
-  │   - Bump version in extension.toml and Cargo.toml
+  │   - Bump version in extension.toml
   │   - git add && git commit
   │   - git tag vX.Y.Z
   │   - git push && git push --tags
@@ -187,8 +187,6 @@ Changes:
 - Update CHANGELOG.md with new entry
 - Update SECURITY.md supported version
 - Bump version in extension.toml (0.1.0 → X.Y.Z)
-- Bump version in Cargo.toml (0.1.0 → X.Y.Z)
-- Update Cargo.lock
 - Create git tag vX.Y.Z
 - Push to origin (triggers GitHub Action)
 
@@ -235,23 +233,17 @@ Use the Edit tool to replace the version table:
 | < $NEW_VERSION | :x:                |
 ```
 
-### 4d. Bump Version in extension.toml and Cargo.toml
+### 4d. Bump Version in extension.toml
 
 ```bash
 # Update extension.toml
 sed -i.bak "s/^version = \"$CURRENT\"/version = \"$NEW_VERSION\"/" extension.toml && rm extension.toml.bak
-
-# Update Cargo.toml
-sed -i.bak "s/^version = \"$CURRENT\"/version = \"$NEW_VERSION\"/" Cargo.toml && rm Cargo.toml.bak
-
-# Update Cargo.lock
-cargo generate-lockfile
 ```
 
 ### 4e. Commit Release Files
 
 ```bash
-git add CHANGELOG.md SECURITY.md extension.toml Cargo.toml Cargo.lock
+git add CHANGELOG.md SECURITY.md extension.toml
 git commit -m "v$NEW_VERSION"
 ```
 

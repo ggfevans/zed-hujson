@@ -104,18 +104,16 @@ See [`examples/markdown-fence.md`](examples/markdown-fence.md) for a ready-to-op
 
 ### Prerequisites
 
-* Rust stable with the WebAssembly target (`rustup target add wasm32-wasip2`)
 * Zed Preview (required for local extension loading)
 * `git` — the query check clones the pinned grammar
 
 > Grammar development (changing `grammar.js`, regenerating the parser with `tree-sitter-cli`) happens in the separate [ggfevans/tree-sitter-hujson](https://github.com/ggfevans/tree-sitter-hujson) repository. This repository consumes the pre-generated grammar, so no `tree-sitter-cli` is needed here.
 
-### Build
+### Checks
 
-Compile the extension and verify the Tree-sitter queries against your pinned grammar:
+Verify the Tree-sitter queries against the pinned grammar:
 
 ```
-cargo build --release --target wasm32-wasip2
 ./scripts/check-queries.sh
 ```
 
