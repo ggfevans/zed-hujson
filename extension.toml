@@ -1,6 +1,6 @@
 id = "hujson"
 name = "HuJSON"
-version = "1.0.1"
+version = "1.0.2"
 schema_version = 1
 description = "HuJSON (JWCC) support: JSON with comments and trailing commas"
 authors = ["Gareth Evans <hi@gvns.ca>"]
