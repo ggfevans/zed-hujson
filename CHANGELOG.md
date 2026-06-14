@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Updated the pinned `tree-sitter-hujson` grammar to the v1.1.0 release (`54fb9ef`). The grammar was tightened to RFC 8259 strictness (a document has exactly one root value; numbers and strings follow stricter rules), so invalid JSON now surfaces `ERROR` nodes. Valid JSON and the public node types are unchanged, so syntax highlighting and queries behave identically. (#34)
+
 ## [1.0.2] - 2026-06-11
 
 ### Removed

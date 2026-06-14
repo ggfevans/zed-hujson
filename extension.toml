@@ -9,4 +9,4 @@ languages = ["languages/hujson"]
 
 [grammars.hujson]
 repository = "https://github.com/ggfevans/tree-sitter-hujson"
-rev = "506ab946025772028c0050d8c6b555ef5670f4b5"
+rev = "54fb9effbd10fd999ef6e8fecf24b9eae84df53c"
