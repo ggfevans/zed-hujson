@@ -126,6 +126,10 @@ Verify the Tree-sitter queries against the pinned grammar:
 
 Use Extensions: Reload Extensions from the command palette to apply updates after making changes.
 
+## AI Disclosure
+
+This project was built with AI assistance. AI disclosure: see [AI_DISCLOSURE.md](./AI_DISCLOSURE.md).
+
 ## License
 
 MIT
