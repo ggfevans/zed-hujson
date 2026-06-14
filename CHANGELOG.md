@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Technical
+
+- Pinned all Node-based GitHub Actions to their latest Node 24 release SHAs ahead of the Node 20 runner deprecation: `actions/checkout` v6.0.3, `softprops/action-gh-release` v3.0.0, `actions/upload-artifact` v7.0.1, and `github/codeql-action/upload-sarif` v4.36.2. The Docker-based `aquasecurity/trivy-action` is unaffected.
+
 ## [1.1.0] - 2026-06-14
 
 ### Changed
