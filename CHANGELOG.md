@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical
 
-- Pinned all Node-based GitHub Actions to their latest Node 24 release SHAs ahead of the Node 20 runner deprecation: `actions/checkout` v6.0.3, `softprops/action-gh-release` v3.0.0, `actions/upload-artifact` v7.0.1, and `github/codeql-action/upload-sarif` v4.36.2. The Docker-based `aquasecurity/trivy-action` is unaffected.
+- Pinned all Node-based GitHub Actions to their latest Node 24 release SHAs ahead of the Node 20 runner deprecation: `actions/checkout` v6.0.3, `softprops/action-gh-release` v3.0.0, `actions/upload-artifact` v7.0.1, and `github/codeql-action/upload-sarif` v4.36.2.
+- Bumped `aquasecurity/trivy-action` to v0.36.0, which updates its transitive `actions/cache` dependency to the Node 24 line (v5), clearing the last Node 20 deprecation warning in the Trivy workflow.
 
 ## [1.1.0] - 2026-06-14
 
